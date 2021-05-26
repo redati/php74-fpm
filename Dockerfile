@@ -43,8 +43,8 @@ RUN echo yes | pecl install memcached
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
 RUN docker-php-ext-install gd soap pdo_mysql opcache mbstring \
         mysqli gettext calendar calendar bz2 exif gettext \
-        sockets sysvmsg sysvsem sysvshm xsl zip xmlrpc
-RUN docker-php-ext-enable igbinary redis lzf imagick memcached
+        sockets sysvmsg sysvsem sysvshm xsl zip xmlrpc intl
+RUN docker-php-ext-enable igbinary redis lzf imagick memcached intl
 #RUN docker-php-ext-enable xdebug
 
 RUN echo "America/Sao_Paulo" > /etc/timezone
