@@ -11,11 +11,11 @@ FROM php:7.4-fpm
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Sao_Paulo
 
-#RUN echo 'Acquire::http { Proxy "http://172.17.0.2:3142"; };' >> /etc/apt/apt.conf.d/01proxy
-#VOLUME ["/var/cache/apt-cacher-ng"]
+RUN echo 'Acquire::http { Proxy "http://172.17.0.2:3142"; };' >> /etc/apt/apt.conf.d/01proxy
+VOLUME ["/var/cache/apt-cacher-ng"]
 
 #deps
-RUN apt-get update -y
+RUN apt-get update --fix-missing -y
 RUN apt-get install -y gcc make autoconf pkg-config build-essential software-properties-common  
 RUN apt-get install -y tar zip unzip zlib1g-dev zlib1g libzip-dev libbz2-dev
 RUN apt-get install -y optipng gifsicle jpegoptim libfreetype6-dev libjpeg62-turbo-dev libpng-dev
@@ -25,6 +25,24 @@ RUN apt-get install -y libc-dev libssl-dev git libonig-dev libmcrypt-dev
 RUN apt-get install -y nano libxml2-dev libjemalloc-dev libjemalloc2 libcurl4-openssl-dev
 RUN apt-get install -y libmagickwand-dev libmemcached-dev libmemcached-tools
 RUN apt-get install -y sendmail mailutils cron
+
+#megapack
+RUN apt-get install -y libxss1 libxss-dev
+RUN apt-get install -y libxcursor1 libxcursor-dev
+RUN apt-get install -y libgtk-3-0 libgtk-3-dev libgtk-3-bin libgtk-3-common
+RUN apt-get install -y npm
+RUN apt-get install -y gconf-service libasound2 libatk1.0-0 libatk-bridge2.0-0 libc6 libcairo2  libnss3 lsb-release 
+RUN apt-get install -y libcups2 libdbus-1-3 libexpat1 libfontconfig1 libgcc1 libgconf-2-4
+RUN apt-get install -y libgdk-pixbuf2.0-0 libglib2.0-0 libnspr4 libpango-1.0-0
+RUN apt-get install -y libpangocairo-1.0-0 libstdc++6 libx11-6 libx11-xcb1 libxcb1 libxcomposite1
+RUN apt-get install -y libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxrender1
+RUN apt-get install -y libxtst6 fonts-liberation
+RUN apt-get install -y xdg-utils wget
+RUN npm install -g magepack --unsafe-perm=true
+
+RUN cd /usr/local/lib/node_modules/magepack 
+RUN npm install puppeteer --save --unsafe-perm --allow-root
+
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
