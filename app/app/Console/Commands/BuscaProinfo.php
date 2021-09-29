@@ -41,15 +41,17 @@ class BuscaProinfo extends Command
     public function handle()
     {
 
- 	$arrContextOptions=array(
+
+
+ 	    $arrContextOptions=array(
             "ssl"=>array(
                 "verify_peer"=>false,
                 "verify_peer_name"=>false,
             ),
-       );
+        );
 
 
-       $url = "https://www.decoraonline.com.br/amfeed/feed/download?id=16&file=sku-imagens.csv";
+       $url = "https://www.decoraonline.com.br/amfeed/feed/download?id=25&file=ProdudosRec.csv";
        $contents = file_get_contents($url, true, stream_context_create($arrContextOptions));
        $name = 'Proinfo.csv';
        Storage::disk('public')->put($name, $contents);
@@ -57,7 +59,8 @@ class BuscaProinfo extends Command
         //falha
         //$produtos = Storage::disk('public')->get('Recomendacao.csv'); //storage_path('app\public\Recomendacao.csv');
 
-        $produtos = '/usr/share/nginx/produc/storage/app/public/Proinfo.csv'; //storage_path('app\public\Proinfo.csv');
+        $produtos = storage_path('app\public\Proinfo.csv');
+
         //dd($produtos);
         Excel::import(new ProinfoImport,  $produtos);
         echo 'ok';

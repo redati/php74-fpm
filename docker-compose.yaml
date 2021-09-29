@@ -5,7 +5,7 @@ version: "3"
 services:
   https:
     image: misaelgomes/tengine:latest
-    container_name: proimg_https
+    container_name: prorec_https
     volumes:
       - ./docker/nginx-etc/certs:/etc/nginx/certs
       - ./docker/nginx-etc/sites-enabled/443.conf:/etc/nginx/sites-enabled/443.conf
@@ -26,7 +26,7 @@ services:
     networks:
       - default
   app:
-    container_name: proimg_app
+    container_name: prorec_app
     image: misaelgomes/php74-fpm
     volumes:
       - ./docker/php-config/7.4/fpm/pool.d:/usr/local/etc/php/pool.d
@@ -37,20 +37,20 @@ services:
       - "9001:9000"
     restart: 'always'
     depends_on:
-      - proimg_mysql
+      - prorec_mysql
     links:
-      - proimg_mysql
+      - prorec_mysql
     networks:
       - default
     extra_hosts:
       - m2.com:192.168.0.10
   phpmyadmin:
-    container_name: proimg_phpmyadmin
+    container_name: prorec_phpmyadmin
     image: phpmyadmin/phpmyadmin
     depends_on:
-     - proimg_mysql
+     - prorec_mysql
     environment:
-     - PMA_HOST=proimg_mysql
+     - PMA_HOST=prorec_mysql
      - PMA_USER=root
      - PMA_PASSWORD=root
      - MYSQL_ROOT_PASSWORD=root
@@ -64,27 +64,27 @@ services:
      - mysql
   redis:
     image: redis
-    container_name: proimg_redis
+    container_name: prorec_redis
     ports:
       - 6379
     expose: 
       - 6379
     networks:
       - default
-  proimg_mysql:
-    container_name: proimg_mysql
+  prorec_mysql:
+    container_name: prorec_mysql
     image: percona:ps-8
     environment:
       MYSQL_PORT: 3306
-      MYSQL_HOST: proimg_mysql
+      MYSQL_HOST: prorec_mysql
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: proimg
+      MYSQL_DATABASE: prorec
       MYSQL_USER: root
       MYSQL_PASSWORD: root
       MYSQL_ROOT_HOST: '%'
       TZ: America/Sao_Paulo
     volumes:
-      - proimg-dbdata:/var/lib/mysql
+      - prorec-dbdata:/var/lib/mysql
       - ./docker/mysqld.cnf:/etc/my.cnf.d/mysqld.cnf
     ports:
       - 3307:3306
@@ -99,5 +99,5 @@ networks:
   default:
     driver: bridge
 volumes:
-  proimg-dbdata:
+  prorec-dbdata:
 
