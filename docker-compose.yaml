@@ -1,0 +1,103 @@
+#sudo usermod -aG docker $USER && sudo usermod -aG www-data $USER
+#docker exec -it mds1_app_imgcdn_1 bash
+#docker logs --tail 1000 -f mds1_app_imgcdn_1
+version: "3"
+services:
+  https:
+    image: misaelgomes/tengine:latest
+    container_name: proimg_https
+    volumes:
+      - ./docker/nginx-etc/certs:/etc/nginx/certs
+      - ./docker/nginx-etc/sites-enabled/443.conf:/etc/nginx/sites-enabled/443.conf
+      - ./docker/nginx-etc/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx-etc/extras:/etc/nginx/extras
+      - ./docker/nginx_logs:/var/log/nginx
+      - ./app:/var/www/html
+    depends_on:
+      - app
+    links:
+      - app
+    ports:
+      - 4433:443
+      - 80:80
+    expose:
+      - 80
+    restart: 'always'
+    networks:
+      - default
+  app:
+    container_name: proimg_app
+    image: misaelgomes/php74-fpm
+    volumes:
+      - ./docker/php-config/7.4/fpm/pool.d:/usr/local/etc/php/pool.d
+      - ./docker/php-config/7.4/fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./app:/var/www/html
+      - ./docker/policy.xml:/etc/ImageMagick-6/policy.xml
+    ports:
+      - "9001:9000"
+    restart: 'always'
+    depends_on:
+      - proimg_mysql
+    links:
+      - proimg_mysql
+    networks:
+      - default
+    extra_hosts:
+      - m2.com:192.168.0.10
+  phpmyadmin:
+    container_name: proimg_phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+     - proimg_mysql
+    environment:
+     - PMA_HOST=proimg_mysql
+     - PMA_USER=root
+     - PMA_PASSWORD=root
+     - MYSQL_ROOT_PASSWORD=root
+    ports:
+     - 8383:80
+    expose:
+      - 8383
+    networks:
+     - default
+    links:
+     - mysql
+  redis:
+    image: redis
+    container_name: proimg_redis
+    ports:
+      - 6379
+    expose: 
+      - 6379
+    networks:
+      - default
+  proimg_mysql:
+    container_name: proimg_mysql
+    image: percona:ps-8
+    environment:
+      MYSQL_PORT: 3306
+      MYSQL_HOST: proimg_mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: proimg
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_HOST: '%'
+      TZ: America/Sao_Paulo
+    volumes:
+      - proimg-dbdata:/var/lib/mysql
+      - ./docker/mysqld.cnf:/etc/my.cnf.d/mysqld.cnf
+    ports:
+      - 3307:3306
+    expose:
+      - 3307
+    restart: 'always'
+    networks:
+      - default
+    security_opt:
+    - seccomp:unconfined
+networks:
+  default:
+    driver: bridge
+volumes:
+  proimg-dbdata:
+

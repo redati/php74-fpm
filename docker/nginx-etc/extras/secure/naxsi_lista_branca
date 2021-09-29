@@ -1,0 +1,14 @@
+BasicRule wl:42000307;
+BasicRule wl:42000262;
+BasicRule wl:42000261;
+
+# running php, see app_server.rules accordingly for asp(x)/cgi etc
+BasicRule wl:42000002;
+
+### HEADERS
+
+BasicRule wl:1000,1001,1005,1007,1010,1011,1013,1100,1101,1200,1308,1309,1310,1311,1315 "mz:$HEADERS_VAR:cookie";
+
+BasicRule wl:1310,1311 "mz:$URL:/admin|BODY";
+
+BasicRule wl:42000244 "mz:$URL:/admin-myp|URL";

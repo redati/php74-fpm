@@ -1,0 +1,11 @@
+--2021-07-14 14:42:58--  https://raw.githubusercontent.com/rafaelstz/traducao_magento2_pt_br/dcd7781444098f8b98cc96a431ec3fce041c216d/pt_BR.csv
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... failed: Connection timed out.
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... failed: Connection timed out.
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... failed: Connection timed out.
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... failed: Connection timed out.
+Retrying.
+
+--2021-07-14 14:51:48--  (try: 2)  https://raw.githubusercontent.com/rafaelstz/traducao_magento2_pt_br/dcd7781444098f8b98cc96a431ec3fce041c216d/pt_BR.csv
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... failed: Connection timed out.
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... 

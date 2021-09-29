@@ -1,0 +1,6 @@
+app/.env
+app/vendor
+docker/nginx_logs
+app/public/app
+app/storage/app
+app/storage/Quadros_Decorativos
