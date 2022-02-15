@@ -10,6 +10,7 @@ FROM php:7.4-fpm
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Sao_Paulo
+RUN dpkg-reconfigure tzdata
 
 RUN echo 'Acquire::http { Proxy "http://172.17.0.2:3142"; };' >> /etc/apt/apt.conf.d/01proxy
 VOLUME ["/var/cache/apt-cacher-ng"]
@@ -24,7 +25,8 @@ RUN apt-get install -y ca-certificates openssl curl tzdata libxslt-dev
 RUN apt-get install -y libc-dev libssl-dev git libonig-dev libmcrypt-dev
 RUN apt-get install -y nano libxml2-dev libjemalloc-dev libjemalloc2 libcurl4-openssl-dev
 RUN apt-get install -y libmagickwand-dev libmemcached-dev libmemcached-tools
-RUN apt-get install -y sendmail mailutils cron
+RUN apt-get install -y sendmail mailutils
+
 
 #megapack
 RUN apt-get install -y libxss1 libxss-dev
@@ -39,6 +41,7 @@ RUN apt-get install -y libxdamage1 libxext6 libxfixes3 libxi6 libxrandr2 libxren
 RUN apt-get install -y libxtst6 fonts-liberation
 RUN apt-get install -y xdg-utils wget
 RUN npm install -g magepack --unsafe-perm=true
+RUN apt-get install -y gnupg && npm install -g grunt-cli
 
 RUN cd /usr/local/lib/node_modules/magepack 
 RUN npm install puppeteer --save --unsafe-perm --allow-root
@@ -71,7 +74,6 @@ RUN date
 RUN echo "sendmail_path=/usr/sbin/sendmail -t -i" >> /usr/local/etc/php/conf.d/sendmail.ini
 
 RUN chown www-data:www-data -R /var/www/html
-
 RUN apt-get remove -y gcc flex make bison build-essential pkg-config \
         g++ libtool automake autoconf
 RUN apt-get remove --purge --auto-remove -y \
@@ -81,3 +83,4 @@ RUN apt-get remove --purge --auto-remove -y \
 RUN rm -fr /tmp/*
 
 EXPOSE 9000
+
